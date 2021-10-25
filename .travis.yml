@@ -1,0 +1,41 @@
+language: c
+
+addons:
+  apt:
+    packages:
+      - cmake
+      - cppcheck
+      - valgrind
+
+before_install:
+  - pip install gcovr
+  - pip install cpplint
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+
+jobs:
+  include:
+    - stage: running gtests
+      script: ./gtesting
+
+    - stage: valgrind
+      script: valgrind --tool=memcheck --leak-check=full ./main < ../in.txt
+
+    - stage: cppcheck
+      script: 
+        - cd ../
+        - cppcheck --error-exitcode=1 *.c
+      
+    - stage: cpplint
+      script: python -m cpplint *.c
+
+    - stage: checking code coverage
+      script:
+        - ./gtesting
+        - mkdir coverage_results 
+        - python -m gcovr -r . -e gtest/ -e *.cpp --xml-pretty -o coverage_results/coverage.xml
+        - ./codecov -f coverage_results/coverage.xml
