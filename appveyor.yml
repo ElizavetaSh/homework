@@ -29,7 +29,7 @@ install:
     
     - call set-env.bat %TOOLCHAIN% %PLATFORM%
 
-    - appveyor DownloadFile <url> -FileName <local-file>
+    - appveyor DownloadFile <url> [-FileName <local-file>]
     - 7z e -y <local-file> -o<local-dir>
     - ...
 
