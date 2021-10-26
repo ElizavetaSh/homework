@@ -11,7 +11,7 @@ add_library(hist STATIC ${LIB_SOURCE_FILES} ${LIB_HEADERS_FILES})
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_executable(main main.cpp "hist.h" "hist.c" )
+add_executable(main main.c "hist.h" "hist.c" )
 target_link_libraries(main hist)
 
 
