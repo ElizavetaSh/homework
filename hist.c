@@ -21,7 +21,6 @@ int*** historgam_point(int** pp, int N) {
 	int*** finish_point = NULL;
 	int** Copy_array = NULL;
 
-
 	if (N == 0) return NULL;
 	if (pp == NULL) return NULL;
 
