@@ -1,40 +1,59 @@
-language: c
 
-addons:
-  apt:
-    packages:
-      - cmake
-      - cppcheck
+dist:     trusty    # используем Ubuntu 14.04 Trusty Tahr (а не 12.02 Precise Pangolin)
+sudo:     required  # используем Virtual Machine (а не Docker container)
 
-before_install:
-  - pip install gcovr
-  - pip install cpplint
+language: c       
 
-before_script:
-  - mkdir build
-  - cd build
-  - cmake ..
-  - make
+os:
+    # будем прогон€ть CI и на Linux, и на Mac OS X...
+    - linux
+    - osx
 
-jobs:
-  include:
-    - stage: running gtests
-      script: ./gtesting
+compiler:
+    # ... и с помощью GCC, и Clang
+    - gcc
+    - clang
 
-    - stage: valgrind
-      script: valgrind --tool=memcheck --leak-check=full ./main < ../in.txt
+env:
+    # список переменных окружени€, вли€ющих на матрицу сборки:
+    - TARGET_CPU=amd64 BUILD_CONFIGURATION=Debug
+    - TARGET_CPU=amd64 BUILD_CONFIGURATION=Release
+    - TARGET_CPU=x86 BUILD_CONFIGURATION=Debug
+    - TARGET_CPU=x86 BUILD_CONFIGURATION=Release
 
-    - stage: cppcheck
-      script: 
-        - cd ../
-        - cppcheck --error-exitcode=1 *.c
-      
-    - stage: cpplint
-      script: python -m cpplint *.c
+matrix:
+    exclude:
+        # вручную исключим ненужные элементы из матрицы сборки:
+        - os:       osx
+          compiler: gcc
 
-    - stage: checking code coverage
-      script:
-        - ./gtesting
-        - mkdir coverage_results 
-        - python -m gcovr -r . -e gtest/ -e *.cpp --xml-pretty -o coverage_results/coverage.xml
-        - ./codecov -f coverage_results/coverage.xml
+        - os:  osx
+          env: TARGET_CPU=x86 BUILD_CONFIGURATION=Debug
+
+        - os:  osx
+          env: TARGET_CPU=x86 BUILD_CONFIGURATION=Release
+
+install:
+    # скрипт настройки среды и установки зависимостей:
+    - source ci/travis/install-$TRAVIS_OS_NAME.sh
+
+script:
+    # скрипт сборки и тестировани€ проекта:
+    - mkdir build
+    - cd build
+    - cmake .. -DCMAKE_BUILD_TYPE=$BUILD_CONFIGURATION -DTARGET_CPU=$TARGET_CPU
+    - cmake --build .
+    - ctest --output-on-failure
+
+deploy:
+    # выкладываем tagged-коммиты на GitHub Releases:
+    provider:     releases
+    file:         <package-file>
+    skip_cleanup: true
+    overwrite:    true
+
+    api_key:
+        secure:   <encrypted-github-token>
+
+    on:
+        tags:     true
