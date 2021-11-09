@@ -39,10 +39,8 @@ jobs:
       - cmake -B build -Dparallel=0
       - make -C build
       - cd build
-      - ./hw2 <../test_file.txt
       - cmake -Dparallel=1 ..
       - make
-      - ./hw2 <../test_file.txt
   - stage: Testing
     name: Cppcheck
     script: 
@@ -57,10 +55,10 @@ jobs:
       - cmake -B build -Dparallel=0
       - make -C build
       - cd build
-      - valgrind --leak-check=full ./hw2 <../test_file.txt
+      - valgrind --leak-check=full 
       - cmake -Dparallel=1 ..
       - make
-      - valgrind --leak-check=full ./hw2 <../test_file.txt
+      - valgrind --leak-check=full 
   - stage: Gtest
     script:
      - cmake -B build 
