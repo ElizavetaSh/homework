@@ -59,12 +59,10 @@ jobs:
       - cmake -B build -Dparallel=0
       - make -C build
       - cd build
-      - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./hw2 
-      - ctest
+      - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ctest
       - cmake -Dparallel=1 ..
       - make
-      - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./hw2 
-      - ctest
+      - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ctest
   
 
 after_success:
