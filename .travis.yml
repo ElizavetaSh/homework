@@ -55,10 +55,10 @@ jobs:
       - cmake -B build -Dparallel=0
       - make -C build
       - cd build
-      - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./test_stat_seqn 
+      - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./hw2 ctest
       - cmake -Dparallel=1 ..
       - make
-      - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./test_dim_seqn 
+      - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./hw2 ctest
   - stage: Gtest
     script:
      - cmake -B build 
