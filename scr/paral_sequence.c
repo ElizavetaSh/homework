@@ -228,26 +228,15 @@ char find_repeat_in_sequence(char char_array[], int len, char result)
 
     int max_count = 0;
 
-    char_count* thread_stuck_buf = (char_count*)malloc(count_thread * sizeof(char_count));
-        if (thread_stuck_buf == NULL)
-        {
-            for (long j = 0; j < count_thread; ++j) 
-            {
-                free(part_data_thread[j].arr);
-            }
-            free(part_data_thread);
-            free(threads);
-            free(thread_stuck_buf);
-            return result;
-        }
+
 
     for (long i = 0; i < count_thread ; ++i) 
     {
         pthread_join(threads[i], NULL);
-        if (max_count<thread_stuck_buf[i].count_repet)
+        if (max_count< part_data_thread[i].result.count_repet)
         {
-            max_count = thread_stuck_buf[i].count_repet;
-            result = thread_stuck_buf[i].element;
+            max_count = part_data_thread[i].result.count_repet;
+            result = part_data_thread[i].result.element;
         }
     }
     for (long j = 0; j < count_thread; ++j) 
@@ -256,6 +245,6 @@ char find_repeat_in_sequence(char char_array[], int len, char result)
     }
     free(part_data_thread);
     free(threads);
-    free(thread_stuck_buf);
+
     return result;    
 }
