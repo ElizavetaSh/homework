@@ -44,7 +44,7 @@ jobs:
   - stage: Testing
     name: Cppcheck
     script: 
-      - cppcheck src
+      - cppcheck scr
       - cppcheck tests
   - stage: TestCoverage
     script:
