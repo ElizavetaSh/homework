@@ -51,6 +51,7 @@ char_count sequencew(char arr[], int len, char_count result)
     char_count* stuck_buf = (char_count*)malloc(len_buff * sizeof(char_count));
     if (stuck_buf == NULL) 
         {
+        free(char_array);
         free(stuck_buf);
         return result;
         }
@@ -74,6 +75,8 @@ char_count sequencew(char arr[], int len, char_count result)
         char_count* stuck_buf_new = (char_count*)malloc(len_buff * sizeof(char_count));
         if (stuck_buf_new == NULL)
         {
+            free(char_array);
+            free(stuck_buf);
             free(stuck_buf_new);
             return result;
         }
