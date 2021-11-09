@@ -60,11 +60,11 @@ jobs:
       - make -C build
       - cd build
       - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./hw2 
-	- ctest
+	  - ctest
       - cmake -Dparallel=1 ..
       - make
       - valgrind --tool=memcheck --leak-check=full --show-leak-kinds=all --leak-resolution=med  --track-origins=yes ./hw2 
-	- ctest
+	  - ctest
   
 
 after_success:
