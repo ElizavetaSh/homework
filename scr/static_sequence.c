@@ -1,7 +1,7 @@
-#include <string.h>
 #include <pthread.h>
+#include <string.h>
 #include <unistd.h>
-#include <malloc.h>
+
 #include "sequence.h"
 
 #define Size_memory 13107200
