@@ -1,5 +1,2 @@
-<<<<<<< HEAD
 aaaaaaaaaaaaasssssssdddddffffgggvvvdddjjjkkkll
-=======
-aaaaaaaaaaaasssssssdddddffffgggaaadddjjjkkkll
->>>>>>> f9170aee78d66558da23c40081da7acacb0470d5
+
