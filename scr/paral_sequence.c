@@ -6,6 +6,8 @@
 #include "sequence.h"
 #include "input.h"
 
+#define BAD_MESSAGE         -13
+#define SUCCESS               0
 #define Size_memory 13107200
 
 typedef struct params
@@ -32,37 +34,32 @@ void fill_buff_char(char* arr_in, char* arr_out, int len)
     arr_out[i]= arr_in[i];
     }
 
-}
-
-char_count sequencew(char arr[], int len, char_count result)
+} 
+void* sequencew(void *args)
 {   
-    
+    params *sequence= (params*) args;
     int len_buff = 4;
     int index_count = 0;
-    int count_need = 0;
+    int count_need = 0; 
 
-    result.element = 0;
-    result.count_char = 0;
-    result.count_repet = 0;
-
-    if (arr == NULL) return result;
-    if ((len > Size_memory-1) |(len < 1)) return result;    
+    if (sequence->arr == NULL) return BAD_MESSAGE;
+    if ((sequence->len > Size_memory-1) |(sequence->len < 1)) return BAD_MESSAGE;    
 
     char* char_array = (char*)malloc(Size_memory* sizeof(char));
         if (char_array == NULL) 
             {
             free(char_array);
-            return result;
+            return BAD_MESSAGE;
             }
     
-    fill_buff_char(arr, char_array, len);
+    fill_buff_char(sequence->arr, char_array, sequence->len);
 
     char_count* stuck_buf = (char_count*)malloc(len_buff * sizeof(char_count));
         if (stuck_buf == NULL) 
             {
             free(char_array);
             free(stuck_buf);
-            return result;
+            return BAD_MESSAGE;
             }
        
     for (char last = *char_array, *f = char_array, *l = char_array;;)
@@ -87,7 +84,7 @@ char_count sequencew(char arr[], int len, char_count result)
             free(stuck_buf);
             free(char_array);
             free(stuck_buf_new);
-            return result;
+            return BAD_MESSAGE;
         }
         fill_buff_struct(stuck_buf, stuck_buf_new, index_count);
         free(stuck_buf);
@@ -118,18 +115,21 @@ char_count sequencew(char arr[], int len, char_count result)
     if (max < stuck_buf[i].count_repet)
         {
         max = stuck_buf[i].count_repet;
-        fill_buff_struct(&stuck_buf[i], &result, 1);
+        fill_buff_struct(&stuck_buf[i], &(sequence->result), 1);
+        printf("%d ",sequence->result.element);
+        printf("%d ",sequence->result.count_char);
+        printf("%d ",sequence->result.count_repet);
         }
     }
 
     free(stuck_buf);
     free(char_array);
 
-    return result;
+    return SUCCESS;
 }
 
 
-char find_repeat_in_sequence(char char_array[], int len, char result) 
+char find_repeat_in_sequence(char char_array[], int len, char result_char) 
 {     
         long thread_len;
         long count_thread = sysconf(_SC_NPROCESSORS_CONF);
@@ -210,33 +210,35 @@ char find_repeat_in_sequence(char char_array[], int len, char result)
             else {
                 break;
             }
-         }
+        }
 
-        if (pthread_create(&(threads[i]), NULL, sequencew ,&part_data_thread[i]) != 0) 
+        printf("%c\n",part_data_thread[i].result.element);
+        if (pthread_create(&threads[i], NULL, sequencew ,&part_data_thread[i]) != 0) 
         {
             for (long j = 0; j < count_thread; ++j) 
             {
+                
                 free(part_data_thread[j].arr);
             }
             free(part_data_thread);
             free(threads);
             fprintf(stderr, "error with kernels\n");
             return ER_KERNEL;
-            }
+        }
         start_index = end_index;
     }
 
     int max_count = 0;
 
-
-
     for (long i = 0; i < count_thread ; ++i) 
     {
         pthread_join(threads[i], NULL);
-        if (max_count< part_data_thread[i].result.count_repet)
+         printf("%d\n",count_thread);
+        if (max_count < part_data_thread[i].result.count_repet)
         {
             max_count = part_data_thread[i].result.count_repet;
-            result = part_data_thread[i].result.element;
+            result_char = part_data_thread[i].result.element;
+
         }
     }
     for (long j = 0; j < count_thread; ++j) 
@@ -245,6 +247,6 @@ char find_repeat_in_sequence(char char_array[], int len, char result)
     }
     free(part_data_thread);
     free(threads);
-
-    return result;    
+    printf("%c\n",result_char);
+    return result_char;    
 }
