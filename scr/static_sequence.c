@@ -26,7 +26,7 @@ void fill_buff_char(char* arr_in, char* arr_out, int len)
 
 }
 
-char_count sequencew(char arr[], int len, char_count result)
+char_count sequencew_static(char arr[], int len, char_count result)
 {   
     
     int len_buff = 4;
@@ -136,7 +136,7 @@ char find_repeat_in_sequence(char char_array[], int len, char result){
             return ER_MEMORY;
         }
 
-    result = sequencew(char_array, len, result_struct).element;
+    result = sequencew_static(char_array, len, result_struct).element;
 
     return result;
 }
