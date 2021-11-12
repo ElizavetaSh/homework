@@ -116,9 +116,6 @@ void* sequencew(void *args)
         {
         max = stuck_buf[i].count_repet;
         fill_buff_struct(&stuck_buf[i], &(sequence->result), 1);
-        printf("%d ",sequence->result.element);
-        printf("%d ",sequence->result.count_char);
-        printf("%d ",sequence->result.count_repet);
         }
     }
 
@@ -212,12 +209,10 @@ char find_repeat_in_sequence(char char_array[], int len, char result_char)
             }
         }
 
-        printf("%c\n",part_data_thread[i].result.element);
         if (pthread_create(&threads[i], NULL, sequencew ,&part_data_thread[i]) != 0) 
         {
             for (long j = 0; j < count_thread; ++j) 
-            {
-                
+            {                
                 free(part_data_thread[j].arr);
             }
             free(part_data_thread);
@@ -233,7 +228,6 @@ char find_repeat_in_sequence(char char_array[], int len, char result_char)
     for (long i = 0; i < count_thread ; ++i) 
     {
         pthread_join(threads[i], NULL);
-         printf("%d\n",count_thread);
         if (max_count < part_data_thread[i].result.count_repet)
         {
             max_count = part_data_thread[i].result.count_repet;
@@ -247,6 +241,5 @@ char find_repeat_in_sequence(char char_array[], int len, char result_char)
     }
     free(part_data_thread);
     free(threads);
-    printf("%c\n",result_char);
     return result_char;    
 }
