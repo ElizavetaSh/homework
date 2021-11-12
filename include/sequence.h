@@ -15,5 +15,6 @@ typedef struct char_count
 
 void fill_buff_char(char arr_in[], char arr_out[], int len);
 void fill_buff_struct(char_count* arr_in, char_count* arr_out, int len);
-char_count sequencew(char arr[], int len, char_count result);
-char find_repeat_in_sequence(char char_array[], int len, char result);
+void* sequencew(void *args);
+char find_repeat_in_sequence(char char_array[], int len, char result_char);
+char_count sequencew_static(char arr[], int len, char_count result);
