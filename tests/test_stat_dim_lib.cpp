@@ -31,7 +31,7 @@ TEST(LIB_TEST, test_lib_2)
     int len = defin_fsize("test_file.txt");
     char *file_values = charsequence_from_file(len, "test_file.txt");
     char result = 0;
-        EXPECT_EQ(find_repeat_in_sequence(file_values, len,result), 'g');
+        EXPECT_EQ(find_repeat_in_sequence(file_values, len,result), 'a');
 
     free(file_values);
 }
