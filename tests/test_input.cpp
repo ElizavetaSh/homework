@@ -31,7 +31,7 @@ TEST(INPUT_TEST, file_number_3) {
 
 TEST(INPUT_TEST, file_number_4) 
 {
-    char arr_t2[] = "aaaaaaaaaaaaasssssssdd";
+    char arr_t2[] = "aaaaaaaaaaaaaaasssssssssssssssddddddddddddddd";
     char *file_values_tr = charsequence_from_file(26, "test_file.txt");
     for (size_t i = 0; i < 16; ++i) 
         {
